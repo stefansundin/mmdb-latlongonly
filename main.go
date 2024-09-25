@@ -30,7 +30,7 @@ func main() {
 
 	db, err := maxminddb.Open(os.Args[1])
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening mmdb file: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Error opening mmdb file: %v\n", err)
 		os.Exit(1)
 	}
 	defer db.Close()
@@ -38,6 +38,12 @@ func main() {
 	writer, err := mmdbwriter.New(mmdbwriter.Options{
 		BuildEpoch:   int64(db.Metadata.BuildEpoch),
 		DatabaseType: fmt.Sprintf("%s-LatLongOnly", db.Metadata.DatabaseType),
+		Description: map[string]string{
+			"en": fmt.Sprintf("%s (LatLongOnly)", db.Metadata.Description["en"]),
+		},
+		Languages: []string{
+			"en",
+		},
 	})
 	if err != nil {
 		panic(err)
@@ -99,4 +105,15 @@ func main() {
 	}
 
 	fmt.Printf("Reduced size of the database by %.2f%%\n", 100*(1-float64(outputFileSize)/float64(inputFileSize)))
+
+	reader, err := maxminddb.Open(os.Args[2])
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error opening file: %v\n", err)
+		os.Exit(1)
+	}
+	if err := reader.Verify(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error verifying file: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("Output file is valid")
 }

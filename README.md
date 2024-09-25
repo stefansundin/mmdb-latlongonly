@@ -9,6 +9,7 @@ $ ./mmdb-latlongonly GeoLite2-City.mmdb GeoLite2-City-LatLongOnly.mmdb
 NodeCount: 5,329,799
 Processed  5,035,446 records
 Reduced size of the database by 38.86%
+Output file is valid
 
 $ mmdbctl metadata --data-types GeoLite2-City.mmdb
 - Binary Format 2.0
@@ -62,6 +63,7 @@ $ mmdbctl metadata --data-types GeoLite2-City-LatLongOnly.mmdb
 - Data Section End Offset 37386651 (35.65 MB)
 - Metadata Section Start Offset 37386665 (35.65 MB)
 - Description
-- Languages
+    en GeoLite2City database (LatLongOnly)
+- Languages     en
 - Build Epoch   1727177173
 ```
